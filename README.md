@@ -36,7 +36,7 @@ This project demonstrates a simple CI/CD pipeline to deploy a Kubernetes applica
 ## 🧪 Example: NGINX Deployment
 
 We'll deploy an NGINX container to the Kubernetes cluster using Kustomize.
-
+---
 ### 📁 Project Structure
 
 ```bash
@@ -50,3 +50,84 @@ pipeline-with-kustomize/
 │       ├── kustomization.yaml
 │       └── replica-patch.yaml
 └── Jenkinsfile
+```
+## 🧩 base/deployment.yaml
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+```
+## 🧩 base/service.yaml
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+```
+## 🧩 base/kustomization.yaml
+```
+resources:
+  - deployment.yaml
+  - service.yaml
+```
+## 🧩 overlays/dev/kustomization.yaml
+```
+resources:
+  - ../../base
+patchesStrategicMerge:
+  - replica-patch.yaml
+```
+## 🧩 overlays/dev/replica-patch.yaml
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 2
+```
+## 🧩 Jenkinsfile
+```
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git 'https://github.com/yourusername/pipeline-with-kustomize.git'
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -k overlays/dev/'
+            }
+        }
+    }
+}
+```
+

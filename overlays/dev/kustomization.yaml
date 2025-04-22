@@ -2,7 +2,6 @@ namespace: my-app-dev
 resources:
   - ../../base
   # - namespace.yaml
-  - secrets.yaml
   - configmap.yaml
 patchesStrategicMerge:
   - replica-patch.yaml

@@ -1,4 +1,11 @@
-configMapGenerator:
-  - name: app-config
-    literals:
-      - LOG_LEVEL=info
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data:
+  key: value
+
+# configMapGenerator:
+#   - name: app-config
+#     literals:
+#       - LOG_LEVEL=info

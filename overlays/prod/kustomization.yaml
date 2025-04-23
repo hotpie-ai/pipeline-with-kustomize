@@ -1,13 +1,12 @@
-namespace: my-app-prod
-# namespace: my-app-dev
 resources:
-  - namespace.yaml
-  - configmap.yaml
   - ../../base/app
   - ../../base/db
   - ../../base/cache
   - ../../base/kafka
-  # - secrets.yaml
+  - namespace.yaml
+  - configmap.yaml
+
+namespace: my-app-prod
 
 patchesStrategicMerge:
   - replica-patch.yaml

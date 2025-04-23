@@ -1,3 +1,5 @@
 resources:
-  - deployment.yaml
-  - service.yaml
+  - app/
+  - cache/
+  - db/
+  - kafka/

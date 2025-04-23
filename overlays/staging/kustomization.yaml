@@ -1,8 +1,13 @@
 namespace: my-app-staging
+# namespace: my-app-dev
 resources:
-  - ../../base
+  - ../../base/app
+  - ../../base/db
+  - ../../base/cache
+  - ../../base/kafka
   - namespace.yaml
-  # - secrets.yaml
   - configmap.yaml
+  - secrets.yaml
+
 patchesStrategicMerge:
   - replica-patch.yaml
